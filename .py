@@ -1,79 +1,28 @@
 class BankAccount:
+    def __init__(self, owner: str, balance: float = 0.0):
+        self.owner = owner
+        self.balance = balance
+        self.transaction_history = []
 
-    def _init_(self, account_number, account_holder_name, initial_balance=0.0):
+    def deposit(self, amount: float) -> None:
+        if amount <= 0:
+            raise ValueError("Deposit amount must be positive")
+        self.balance += amount
+        self.transaction_history.append(f"Deposited: ${amount}")
 
-        self.__account_number = account_number
+    def withdraw(self, amount: float) -> None:
+        if amount <= 0:
+            raise ValueError("Withdrawal amount must be positive")
+        if amount > self.balance:
+            raise ValueError("Insufficient funds")
+        self.balance -= amount
+        self.transaction_history.append(f"Withdrew: ${amount}")
 
-        self.__account_holder_name = account_holder_name
+    def get_balance(self) -> float:
+        return self.balance
 
-        self.__account_balance = initial_balance
+    def get_transaction_history(self) -> list:
+        return self.transaction_history
 
-
-
-    def deposit(self, amount):
-
-        if amount > 0:
-
-            self.__account_balance += amount
-
-            print(f"Deposited ${amount:.2f} into account {self.__account_number}")
-
-        else:
-
-            print("Invalid deposit amount. Please deposit a positive amount.")
-
-
-
-    def withdraw(self, amount):
-
-        if amount > 0:
-
-            if self.__account_balance >= amount:
-
-                self.__account_balance -= amount
-
-                print(f"Withdrew ${amount:.2f} from account {self.__account_number}")
-
-            else:
-
-                print("Insufficient balance. Cannot withdraw.")
-
-        else:
-
-            print("Invalid withdrawal amount. Please withdraw a positive amount.")
-
-
-
-    def display_balance(self):
-
-        print(f"Account {self._account_number} balance: ${self._account_balance:.2f}")
-
-
-
-
-
-# Testing the BankAccount class
-
-if _name== "main_":
-
-    # Create a BankAccount instance
-
-    account1 = BankAccount("123456", "John Doe", 1000.0)
-
-
-
-    # Deposit money
-
-    account1.deposit(500.0)
-
-
-
-    # Withdraw money
-
-    account1.withdraw(200.0)
-
-
-
-    # Display balance
-
-    account1.display_balance()
+    def __str__(self) -> str:
+        return f"BankAccount(owner={self.owner}, balance=${self.balance})"
